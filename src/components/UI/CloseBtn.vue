@@ -3,11 +3,14 @@
 </template>
 
 <script>
-export default {}
+export default {
+    name: "close-btn",
+}
 </script>
 
 <style scoped>
 .close-btn {
+    user-select: none;
     overflow: hidden;
     transition: 0.2s;
     cursor: pointer;

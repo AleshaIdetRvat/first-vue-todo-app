@@ -4,30 +4,23 @@
     <form @submit="addPost" class="new-post-form">
         <div class="new-post-form__title">Add New Post!</div>
 
-        <input
+        <main-input
             v-model="post.title"
-            class="new-post-form__input"
-            type="text"
             placeholder="New post Title"
+            type="text"
         />
 
-        <input
+        <main-input
             v-model="post.content"
-            class="new-post-form__input"
-            type="text"
             placeholder="New post text"
+            type="text"
         />
 
         <main-btn type="submit"> Create </main-btn>
     </form>
 </template>
 <script>
-import MainBtn from "@/components/UI/MainBtn"
-
 export default {
-    components: {
-        MainBtn,
-    },
     data: () => ({
         post: {
             title: "",
@@ -48,6 +41,7 @@ export default {
     },
 }
 </script>
+
 <style scoped>
 .new-post-form {
     padding: 15px;
@@ -56,16 +50,10 @@ export default {
     display: flex;
     flex-direction: column;
     gap: 10px;
+    border-radius: 0px 0px 12px 12px;
 }
 
 .new-post-form__title {
-}
-
-.new-post-form__input {
-    padding: 8px;
-    border: none;
-    background: rgb(207, 207, 207);
-    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
-    border-radius: 6px;
+    font-size: 1.4em;
 }
 </style>

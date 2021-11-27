@@ -1,7 +1,7 @@
 <template>
     <div class="app">
         <new-post-form @addNewPost="handleNewPost" />
-        <post-list :posts="posts" />
+        <post-list :posts="posts" @delete="deletePost" />
     </div>
 </template>
 
@@ -40,6 +40,11 @@ export default {
             this.posts = [...this.posts, post]
             // this.posts.push(post)
         },
+        deletePost(postId) {
+            console.log("post id", postId)
+
+            this.posts = this.posts.filter(({ id }) => id !== postId)
+        },
     },
 }
 </script>
@@ -51,7 +56,8 @@ export default {
     box-sizing: border-box;
 }
 body {
-    background: #343434;
+    background: #303030;
     color: yellowgreen;
+    overflow: overlay;
 }
 </style>

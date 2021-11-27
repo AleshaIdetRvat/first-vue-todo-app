@@ -2,7 +2,7 @@
     <article class="post">
         <h2 class="post__title"><strong>Название:</strong> {{ post.title }}</h2>
 
-        <close-btn />
+        <close-btn @click="$emit('delete', post.id)" />
 
         <section class="post__content">
             <h3 class="post__second-title">Описание:</h3>
@@ -14,10 +14,7 @@
 </template>
 
 <script>
-import CloseBtn from "@/components/UI/CloseBtn"
-
 export default {
-    components: { CloseBtn },
     props: {
         post: {
             type: Object,
