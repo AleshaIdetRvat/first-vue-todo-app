@@ -42,6 +42,7 @@ export default {
         },
     },
 }
+
 </script>
 <style scoped>
 .new-post-form {
