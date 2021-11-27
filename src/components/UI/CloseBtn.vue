@@ -8,6 +8,7 @@ export default {}
 
 <style scoped>
 .close-btn {
+    overflow: hidden;
     transition: 0.2s;
     cursor: pointer;
     width: 30px;

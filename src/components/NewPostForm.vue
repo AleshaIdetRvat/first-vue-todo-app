@@ -18,11 +18,16 @@
             placeholder="New post text"
         />
 
-        <button class="new-post-form__btn" type="submit">Create</button>
+        <main-btn type="submit"> Create </main-btn>
     </form>
 </template>
 <script>
+import MainBtn from "@/components/UI/MainBtn"
+
 export default {
+    components: {
+        MainBtn,
+    },
     data: () => ({
         post: {
             title: "",
@@ -42,7 +47,6 @@ export default {
         },
     },
 }
-
 </script>
 <style scoped>
 .new-post-form {
@@ -57,16 +61,11 @@ export default {
 .new-post-form__title {
 }
 
-.new-post-form__input,
-.new-post-form__btn {
+.new-post-form__input {
     padding: 8px;
     border: none;
     background: rgb(207, 207, 207);
     box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
     border-radius: 6px;
-}
-
-.new-post-form__btn {
-    background-color: yellowgreen;
 }
 </style>
