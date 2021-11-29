@@ -46,11 +46,11 @@ export default {
 .new-post-form {
     padding: 15px;
     color: white;
-    background-color: rgb(77, 77, 77);
+    /* background-color: rgb(77, 77, 77); */
+    /* border-radius: 8px; */
     display: flex;
     flex-direction: column;
     gap: 10px;
-    border-radius: 0px 0px 12px 12px;
 }
 
 .new-post-form__title {

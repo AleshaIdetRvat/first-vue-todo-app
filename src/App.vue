@@ -1,6 +1,12 @@
+// note: Остановился на 1ч 7мин ->
+https://www.youtube.com/watch?v=XzLuMtDelGk&t=2753s
+
 <template>
     <div class="app">
-        <new-post-form @addNewPost="handleNewPost" />
+        <modal-window :isShow="false">
+            <new-post-form @addNewPost="handleNewPost" />
+        </modal-window>
+
         <post-list :posts="posts" @delete="deletePost" />
     </div>
 </template>
@@ -37,12 +43,9 @@ export default {
     },
     methods: {
         handleNewPost(post) {
-            this.posts = [...this.posts, post]
-            // this.posts.push(post)
+            this.posts = [post, ...this.posts]
         },
         deletePost(postId) {
-            console.log("post id", postId)
-
             this.posts = this.posts.filter(({ id }) => id !== postId)
         },
     },
@@ -50,14 +53,18 @@ export default {
 </script>
 
 <style>
+:root {
+    --green: yellowgreen;
+    --black: #303030;
+}
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 body {
-    background: #303030;
-    color: yellowgreen;
+    background: var(--black);
+    color: var(--green);
     overflow: overlay;
 }
 </style>
