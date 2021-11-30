@@ -6,7 +6,7 @@
             <div class="app__search search">
                 <!-- 🔎 -->
                 <span class="search__icon">🔍</span>
-                <main-input v-model="searchQuery" placeholder="Search" />
+                <main-input v-model.trim="searchQuery" placeholder="Search" />
             </div>
 
             <custom-select
@@ -22,24 +22,30 @@
         <div class="app__content">
             <post-list
                 v-if="!isLoading"
-                :posts="sortedPosts"
+                :posts="sortedAndSearchedPosts"
                 @delete="deletePost"
             />
             <h3 v-else>Loading...</h3>
         </div>
+
+        <pagination
+            :totalPagesCount="totalPages"
+            v-model:currentPage="currentPageNumber"
+        />
     </div>
 </template>
 
 <script>
-import NewPostForm from "./components/NewPostForm.vue"
-import PostList from "./components/PostList.vue"
+import NewPostForm from "@/components/NewPostForm.vue"
+import Pagination from "@/components/Pagination"
+import PostList from "@/components/PostList.vue"
 
 export default {
     components: {
         NewPostForm,
         PostList,
+        Pagination,
     },
-
     // (+) Типо useMemo/useCallback
     computed: {
         // (-) Документация: "геттер вычисляемого свойства"
@@ -62,10 +68,22 @@ export default {
             }
             return [...this.posts].sort(sortFunction)
         },
+        sortedAndSearchedPosts() {
+            if (this.searchQuery === "") {
+                return this.sortedPosts
+            }
+            return this.sortedPosts.filter((post) =>
+                post.title
+                    .toLowerCase()
+                    .includes(this.searchQuery.toLowerCase())
+            )
+        },
     },
-
     // (+) типо useEffect
     watch: {
+        currentPageNumber() {
+            this.fetchPosts()
+        },
         // (?) функция-наблюдатель должна иметь такое же имя как и значение за которым оно следит
         //     параметром в нее приходит новое значение
         // selectedSortOption(sortType) {
@@ -85,7 +103,6 @@ export default {
         //     this.posts.sort(sortFunction)
         // },
     },
-
     data() {
         return {
             searchQuery: "",
@@ -93,6 +110,9 @@ export default {
             isModalShow: false,
             isLoading: true,
             selectedSortOption: "",
+            currentPageNumber: 1,
+            totalPages: 0,
+            postsLimit: 10,
             sortOptions: [
                 { value: "title", name: "По названию" },
                 { value: "body", name: "По описанию" },
@@ -116,8 +136,12 @@ export default {
                 this.isLoading = true
 
                 const data = await fetch(
-                    "https://jsonplaceholder.typicode.com/posts?_limit=10"
+                    `https://jsonplaceholder.typicode.com/posts?_limit=${this.postsLimit}&_page=${this.currentPageNumber}`
                 )
+                const totalPostsCount = +data.headers.get("x-total-count")
+
+                this.totalPages = Math.ceil(totalPostsCount / this.postsLimit)
+
                 const parsedPosts = await data.json()
                 this.posts = parsedPosts.map(({ id, title, body }) => ({
                     id,
@@ -127,7 +151,12 @@ export default {
             } catch (error) {
                 alert(error)
             } finally {
-                this.isLoading = false
+                setTimeout(
+                    function () {
+                        this.isLoading = false
+                    }.bind(this),
+                    2000
+                )
             }
         },
     },

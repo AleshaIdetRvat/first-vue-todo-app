@@ -9,7 +9,7 @@
         />
 
         <main-input
-            v-model="post.content"
+            v-model="post.body"
             placeholder="New post text"
             type="text"
         />
@@ -22,7 +22,7 @@ export default {
     data: () => ({
         post: {
             title: "",
-            content: "",
+            body: "",
         },
     }),
 
@@ -42,7 +42,7 @@ export default {
 
             this.$emit("addNewPost", { ...this.post, id: Date.now() })
 
-            this.post.content = ""
+            this.post.body = ""
             this.post.title = ""
         },
     },
