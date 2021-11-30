@@ -1,5 +1,3 @@
-// @submit="addNewPost"
-
 <template>
     <form @submit="addPost" class="new-post-form">
         <div class="new-post-form__title">Add New Post!</div>
@@ -27,14 +25,23 @@ export default {
             content: "",
         },
     }),
+
+    watch: {
+        //(?) В случае когда мы следим за объектом,
+        //    нам нужно включить режим "глубокого" отслеживания.
+        post: {
+            handler(newValue) {
+                //...
+            },
+            deep: true,
+        },
+    },
     methods: {
         addPost(e) {
             e.preventDefault()
-            this.post.id = Date.now()
 
-            this.$emit("addNewPost", { ...this.post })
+            this.$emit("addNewPost", { ...this.post, id: Date.now() })
 
-            // После добавления поста очищаем инпуты
             this.post.content = ""
             this.post.title = ""
         },
@@ -45,8 +52,6 @@ export default {
 <style scoped>
 .new-post-form {
     color: white;
-    /* background-color: rgb(77, 77, 77); */
-    /* border-radius: 8px; */
     display: flex;
     flex-direction: column;
     gap: 10px;

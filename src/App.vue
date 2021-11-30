@@ -4,8 +4,13 @@
             <main-btn style="margin: 0 auto; display: block" @click="openModal"
                 >Создать новый пост 📝
             </main-btn>
-            <custom-select v-model="sortOption"></custom-select>
+
+            <custom-select
+                v-model="selectedSortOption"
+                :options="sortOptions"
+            />
         </div>
+
         <modal-window v-model:isShow="isModalShow">
             <new-post-form @addNewPost="handleNewPost" />
         </modal-window>
@@ -24,13 +29,68 @@ export default {
         NewPostForm,
         PostList,
     },
+
+    // (+) Типо useMemo/useCallback
+    computed: {
+        // (-) Документация: "геттер вычисляемого свойства"
+        // (?) данная функция будет возвращать отсортированные посты
+        // sortedPosts() {
+        //     let sortFunction
+        //     switch (this.selectedSortOption) {
+        //         case "title":
+        //         case "body":
+        //             sortFunction = (post1, post2) =>
+        //                 post1[this.selectedSortOption].localeCompare(
+        //                     post2[this.selectedSortOption]
+        //                 )
+        //             break
+        //         case "date":
+        //             sortFunction = (post1, post2) => post1.id - post2.id
+        //             break
+        //         default:
+        //             return [...this.posts]
+        //     }
+        //     return [...this.posts].sort(sortFunction)
+        // },
+    },
+
+    // (+) типо useEffect
+    watch: {
+        // (?) функция-наблюдатель должна иметь такое же имя как и значение за которым оно следит
+        //     параметром в нее приходит новое значение
+
+        selectedSortOption(sortType) {
+            let sortFunction
+
+            switch (sortType) {
+                case "title":
+                case "body":
+                    sortFunction = (post1, post2) =>
+                        post1[sortType].localeCompare(post2[sortType])
+
+                    break
+                case "date":
+                    sortFunction = (post1, post2) => post1.id - post2.id
+                    break
+                default:
+                    return
+            }
+
+            this.posts.sort(sortFunction)
+        },
+    },
+
     data() {
         return {
             posts: [],
             isModalShow: false,
-            testInputValue: "",
             isLoading: true,
-            sortOption: "",
+            selectedSortOption: "",
+            sortOptions: [
+                { value: "title", name: "По названию" },
+                { value: "body", name: "По описанию" },
+                { value: "date", name: "По дате добавления" },
+            ],
         }
     },
     methods: {
@@ -55,7 +115,7 @@ export default {
                 this.posts = parsedPosts.map(({ id, title, body }) => ({
                     id,
                     title,
-                    content: body,
+                    body,
                 }))
             } catch (error) {
                 alert(error)
@@ -84,6 +144,11 @@ body {
     background: var(--black);
     color: var(--green);
     overflow: overlay;
+}
+#app,
+.app,
+body {
+    min-height: 100vh;
 }
 .app {
     padding: 20px 10px;

@@ -1,5 +1,5 @@
 <template>
-    <input v-model="modelValue" @input="changeHandler" class="main-input" />
+    <input :value="modelValue" @input="changeHandler" class="main-input" />
 </template>
 
 <script>

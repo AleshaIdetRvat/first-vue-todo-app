@@ -7,7 +7,7 @@
         <section class="post__content">
             <h3 class="post__second-title">Описание:</h3>
             <p class="post__description">
-                {{ post.content }}
+                {{ post.body }}
             </p>
         </section>
     </article>
@@ -25,8 +25,10 @@ export default {
 </script>
 <style scoped>
 .post {
-    display: grid;
+    transition: 0.5s;
 
+    height: 100%;
+    display: grid;
     grid-template-columns: 1fr auto;
     gap: 8px;
     padding: 15px;

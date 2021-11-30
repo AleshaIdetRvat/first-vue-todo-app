@@ -1,6 +1,7 @@
 <template>
-    <select v-model="modelValue" @change="changeHandler">
-        <option disabled value="">Выберите из списка</option>
+    <select :value="modelValue" @change="changeHandler">
+        <option disabled selected value="">Выберите из списка</option>
+
         <option v-for="item in options" :key="item.value" :value="item.value">
             {{ item.name }}
         </option>
@@ -14,8 +15,10 @@ export default {
         modelValue: {
             type: String,
         },
-        options: Array,
-        default: () => [],
+        options: {
+            type: Array,
+            default: () => [],
+        },
     },
     methods: {
         changeHandler(event) {
