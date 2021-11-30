@@ -1,22 +1,32 @@
 <template>
     <div class="app">
-        <div class="app__header">
-            <main-btn style="margin: 0 auto; display: block" @click="openModal"
-                >Создать новый пост 📝
-            </main-btn>
+        <header class="app__header">
+            <main-btn @click="openModal">Создать новый пост 📝 </main-btn>
+
+            <div class="app__search search">
+                <!-- 🔎 -->
+                <span class="search__icon">🔍</span>
+                <main-input v-model="searchQuery" placeholder="Search" />
+            </div>
 
             <custom-select
                 v-model="selectedSortOption"
                 :options="sortOptions"
             />
-        </div>
+        </header>
 
         <modal-window v-model:isShow="isModalShow">
             <new-post-form @addNewPost="handleNewPost" />
         </modal-window>
 
-        <post-list v-if="!isLoading" :posts="posts" @delete="deletePost" />
-        <h3 v-else>Loading...</h3>
+        <div class="app__content">
+            <post-list
+                v-if="!isLoading"
+                :posts="sortedPosts"
+                @delete="deletePost"
+            />
+            <h3 v-else>Loading...</h3>
+        </div>
     </div>
 </template>
 
@@ -34,54 +44,51 @@ export default {
     computed: {
         // (-) Документация: "геттер вычисляемого свойства"
         // (?) данная функция будет возвращать отсортированные посты
-        // sortedPosts() {
-        //     let sortFunction
-        //     switch (this.selectedSortOption) {
-        //         case "title":
-        //         case "body":
-        //             sortFunction = (post1, post2) =>
-        //                 post1[this.selectedSortOption].localeCompare(
-        //                     post2[this.selectedSortOption]
-        //                 )
-        //             break
-        //         case "date":
-        //             sortFunction = (post1, post2) => post1.id - post2.id
-        //             break
-        //         default:
-        //             return [...this.posts]
-        //     }
-        //     return [...this.posts].sort(sortFunction)
-        // },
+        sortedPosts() {
+            let sortFunction
+            switch (this.selectedSortOption) {
+                case "title":
+                case "body":
+                    sortFunction = (post1, post2) =>
+                        post1[this.selectedSortOption].localeCompare(
+                            post2[this.selectedSortOption]
+                        )
+                    break
+                case "date":
+                    sortFunction = (post1, post2) => post1.id - post2.id
+                    break
+                default:
+                    return [...this.posts]
+            }
+            return [...this.posts].sort(sortFunction)
+        },
     },
 
     // (+) типо useEffect
     watch: {
         // (?) функция-наблюдатель должна иметь такое же имя как и значение за которым оно следит
         //     параметром в нее приходит новое значение
-
-        selectedSortOption(sortType) {
-            let sortFunction
-
-            switch (sortType) {
-                case "title":
-                case "body":
-                    sortFunction = (post1, post2) =>
-                        post1[sortType].localeCompare(post2[sortType])
-
-                    break
-                case "date":
-                    sortFunction = (post1, post2) => post1.id - post2.id
-                    break
-                default:
-                    return
-            }
-
-            this.posts.sort(sortFunction)
-        },
+        // selectedSortOption(sortType) {
+        //     let sortFunction
+        //     switch (sortType) {
+        //         case "title":
+        //         case "body":
+        //             sortFunction = (post1, post2) =>
+        //                 post1[sortType].localeCompare(post2[sortType])
+        //             break
+        //         case "date":
+        //             sortFunction = (post1, post2) => post1.id - post2.id
+        //             break
+        //         default:
+        //             return
+        //     }
+        //     this.posts.sort(sortFunction)
+        // },
     },
 
     data() {
         return {
+            searchQuery: "",
             posts: [],
             isModalShow: false,
             isLoading: true,
@@ -134,6 +141,7 @@ export default {
 :root {
     --green: yellowgreen;
     --black: #303030;
+    --white: rgb(231, 231, 231);
 }
 * {
     margin: 0;
@@ -152,10 +160,28 @@ body {
 }
 .app {
     padding: 20px 10px;
+    display: flex;
+    flex-direction: column;
 }
 .app__header {
+    padding: 16px 8px 32px;
     display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
+    justify-content: space-around;
+    align-items: center;
+}
+.app__content {
+    flex: 1 1 auto;
+    display: flex;
+}
+.app__search {
+}
+.search {
+    background: var(--white);
+    border-radius: 8px;
+}
+
+.search__icon {
+    padding: 8px 4px 8px 6px;
+    width: 100%;
 }
 </style>

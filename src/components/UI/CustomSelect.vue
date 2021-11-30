@@ -1,6 +1,8 @@
 <template>
-    <select :value="modelValue" @change="changeHandler">
-        <option disabled selected value="">Выберите из списка</option>
+    <select class="select" :value="modelValue" @change="changeHandler">
+        <option class="select__option" disabled selected value="">
+            Выберите из списка
+        </option>
 
         <option v-for="item in options" :key="item.value" :value="item.value">
             {{ item.name }}
@@ -28,4 +30,13 @@ export default {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.select {
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 8px;
+    background: var(--white);
+}
+.select__option {
+}
+</style>

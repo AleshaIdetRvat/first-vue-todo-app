@@ -15,6 +15,8 @@
 
 <script>
 export default {
+    emits: ["delete"],
+
     props: {
         post: {
             type: Object,
@@ -25,9 +27,8 @@ export default {
 </script>
 <style scoped>
 .post {
-    transition: 0.5s;
+    transition: 0.7s;
 
-    height: 100%;
     display: grid;
     grid-template-columns: 1fr auto;
     gap: 8px;

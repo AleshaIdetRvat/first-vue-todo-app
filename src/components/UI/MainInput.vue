@@ -22,7 +22,7 @@ export default {
 .main-input {
     padding: 8px;
     border: none;
-    background: rgb(207, 207, 207);
+    background: var(--white);
     box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
     border-radius: 6px;
 }
