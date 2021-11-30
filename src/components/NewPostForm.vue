@@ -44,7 +44,6 @@ export default {
 
 <style scoped>
 .new-post-form {
-    padding: 15px;
     color: white;
     /* background-color: rgb(77, 77, 77); */
     /* border-radius: 8px; */

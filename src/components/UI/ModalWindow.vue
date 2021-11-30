@@ -1,7 +1,10 @@
 <template>
-    <div v-if="isShow" class="modal">
+    <div v-if="isShow" class="modal" @click="hideModal">
         <div @click.stop class="modal__container">
-            <slot></slot>
+            <div class="modal__column">
+                <close-btn @click="hideModal" style="align-self: flex-end" />
+                <slot></slot>
+            </div>
         </div>
     </div>
 </template>
@@ -24,7 +27,28 @@ export default {
 </script>
 
 <style scoped>
+@keyframes showing-animation {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+@keyframes showing-translate-animation {
+    0% {
+        transform: scale(80%);
+    }
+
+    100% {
+        transform: scale(100%);
+    }
+}
 .modal {
+    animation: showing-animation 0.3s ease forwards;
+
+    opacity: 0;
     position: fixed;
     z-index: 10;
     top: 0;
@@ -36,13 +60,22 @@ export default {
     align-items: center;
     justify-content: center;
 
-    background-color: #00000090;
+    background-color: #000000b0;
 }
 
 .modal__container {
-    padding: 15px;
+    animation: showing-translate-animation 0.3s ease forwards;
+
+    min-width: 33vw;
+    padding: 20px;
     border-radius: 8px;
 
     background-color: var(--black);
+}
+
+.modal__column {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
 }
 </style>

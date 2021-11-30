@@ -1,6 +1,6 @@
 <template>
-    <!--(-) Вариант с v-show - не удаляется, добавляется display: none <div v-show="posts.length > 0" class="container"> -->
-    <div v-if="posts.length > 0" class="container">
+    <!--(-) Вариант с v-show - не удаляется, добавляется display: none <div v-show="posts.length > 0" class="column"> -->
+    <div v-if="posts.length > 0" class="column">
         <h2>Posts List:</h2>
         <post-item
             @delete="$emit('delete', post.id)"
@@ -28,8 +28,7 @@ export default {
 </script>
 
 <style scoped>
-.container {
-    padding: 10px;
+.column {
     display: flex;
     flex-direction: column;
     gap: 10px;

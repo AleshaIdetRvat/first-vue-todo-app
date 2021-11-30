@@ -1,5 +1,5 @@
 <template>
-    <input :value="modelValue" @input="updateInput" class="main-input" />
+    <input v-model="modelValue" @input="changeHandler" class="main-input" />
 </template>
 
 <script>
@@ -11,8 +11,8 @@ export default {
     },
 
     methods: {
-        updateInput(e) {
-            this.$emit("update:modelValue", e.target.value)
+        changeHandler(event) {
+            this.$emit("update:modelValue", event.target.value)
         },
     },
 }

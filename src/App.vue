@@ -1,13 +1,17 @@
-// note: Остановился на 1ч 7мин ->
-https://www.youtube.com/watch?v=XzLuMtDelGk&t=2753s
-
 <template>
     <div class="app">
-        <modal-window :isShow="false">
+        <div class="app__header">
+            <main-btn style="margin: 0 auto; display: block" @click="openModal"
+                >Создать новый пост 📝
+            </main-btn>
+            <custom-select v-model="sortOption"></custom-select>
+        </div>
+        <modal-window v-model:isShow="isModalShow">
             <new-post-form @addNewPost="handleNewPost" />
         </modal-window>
 
-        <post-list :posts="posts" @delete="deletePost" />
+        <post-list v-if="!isLoading" :posts="posts" @delete="deletePost" />
+        <h3 v-else>Loading...</h3>
     </div>
 </template>
 
@@ -22,32 +26,46 @@ export default {
     },
     data() {
         return {
-            posts: [
-                {
-                    id: 1,
-                    title: "React",
-                    content: "asdjfsdfas dff asdf asldkfj asldfl asdfas",
-                },
-                {
-                    id: 2,
-                    title: "Vue",
-                    content: "asdjf asldkfj asldfl asasd fadfsd    fas",
-                },
-                {
-                    id: 3,
-                    title: "Angular",
-                    content: "asdjf asldkfj asldfl sfasdfasasdfasdf",
-                },
-            ],
+            posts: [],
+            isModalShow: false,
+            testInputValue: "",
+            isLoading: true,
+            sortOption: "",
         }
     },
     methods: {
+        openModal() {
+            this.isModalShow = true
+        },
         handleNewPost(post) {
             this.posts = [post, ...this.posts]
+            this.isModalShow = false
         },
         deletePost(postId) {
             this.posts = this.posts.filter(({ id }) => id !== postId)
         },
+        async fetchPosts() {
+            try {
+                this.isLoading = true
+
+                const data = await fetch(
+                    "https://jsonplaceholder.typicode.com/posts?_limit=10"
+                )
+                const parsedPosts = await data.json()
+                this.posts = parsedPosts.map(({ id, title, body }) => ({
+                    id,
+                    title,
+                    content: body,
+                }))
+            } catch (error) {
+                alert(error)
+            } finally {
+                this.isLoading = false
+            }
+        },
+    },
+    mounted() {
+        this.fetchPosts()
     },
 }
 </script>
@@ -66,5 +84,13 @@ body {
     background: var(--black);
     color: var(--green);
     overflow: overlay;
+}
+.app {
+    padding: 20px 10px;
+}
+.app__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
 }
 </style>

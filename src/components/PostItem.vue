@@ -26,6 +26,7 @@ export default {
 <style scoped>
 .post {
     display: grid;
+
     grid-template-columns: 1fr auto;
     gap: 8px;
     padding: 15px;
